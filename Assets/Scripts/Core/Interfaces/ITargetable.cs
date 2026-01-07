@@ -12,14 +12,4 @@ namespace VoidBreaker.Core
         bool CanBeTargeted { get; }
         string TargetName { get; }
     }
-
-    public enum TargetType
-    {
-        Ship,
-        Room,
-        System,
-        Crew,
-        Projectile,
-        Drone
-    }
 }

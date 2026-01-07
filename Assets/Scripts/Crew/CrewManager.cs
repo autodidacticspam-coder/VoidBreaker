@@ -453,4 +453,13 @@ namespace VoidBreaker.Crew
             return RelationshipType.Bonded;
         }
     }
+
+    public enum RelationshipType
+    {
+        Rivals,
+        Strangers,
+        Acquaintances,
+        Friends,
+        Bonded
+    }
 }

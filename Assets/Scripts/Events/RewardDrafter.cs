@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VoidBreaker.Core;
 using VoidBreaker.Evolution;
+using VoidBreaker.Sector;
 
 namespace VoidBreaker.Events
 {
@@ -24,21 +25,21 @@ namespace VoidBreaker.Events
         [SerializeField] private float mutationPointWeight = 0.15f;
 
         // Current draft state
-        private DraftOption[] currentOptions;
-        private DraftContext currentContext;
+        private RewardOption[] currentOptions;
+        private RewardContext currentContext;
         private bool isDraftActive = false;
 
         // Events
-        public event Action<DraftOption[]> OnDraftPresented;
-        public event Action<DraftOption> OnDraftChosen;
+        public event Action<RewardOption[]> OnDraftPresented;
+        public event Action<RewardOption> OnDraftChosen;
 
         /// <summary>
         /// Generates draft options based on context.
         /// </summary>
-        public DraftOption[] GenerateDraftOptions(DraftContext context)
+        public RewardOption[] GenerateDraftOptions(RewardContext context)
         {
             currentContext = context;
-            var options = new List<DraftOption>();
+            var options = new List<RewardOption>();
 
             // Adjust weights based on context
             var adjustedWeights = AdjustWeights(context);
@@ -53,24 +54,12 @@ namespace VoidBreaker.Events
                 }
             }
 
-            // Apply pity timer adjustments
-            var runManager = GameManager.Instance?.CurrentRun;
-            if (runManager != null)
-            {
-                var adjusted = runManager.GetPityAdjustedDraft(options.ToArray());
-                options = new List<DraftOption>(adjusted);
-            }
-
             currentOptions = options.ToArray();
             isDraftActive = true;
 
             OnDraftPresented?.Invoke(currentOptions);
 
-            GameEvents.TriggerDraftOptionsPresented(new DraftOptionsArgs
-            {
-                options = currentOptions,
-                context = context
-            });
+            Debug.Log($"[RewardDrafter] Generated {currentOptions.Length} reward options");
 
             return currentOptions;
         }
@@ -93,12 +82,6 @@ namespace VoidBreaker.Events
 
             OnDraftChosen?.Invoke(chosen);
 
-            GameEvents.TriggerDraftChoiceMade(new DraftChoiceMadeArgs
-            {
-                chosen = chosen,
-                choiceIndex = index
-            });
-
             Debug.Log($"[RewardDrafter] Player chose: {chosen.displayName}");
         }
 
@@ -113,16 +96,16 @@ namespace VoidBreaker.Events
 
         // ==================== WEIGHT ADJUSTMENT ====================
 
-        private Dictionary<DraftOptionType, float> AdjustWeights(DraftContext context)
+        private Dictionary<RewardOptionType, float> AdjustWeights(RewardContext context)
         {
-            var weights = new Dictionary<DraftOptionType, float>
+            var weights = new Dictionary<RewardOptionType, float>
             {
-                { DraftOptionType.Scrap, scrapWeight },
-                { DraftOptionType.Weapon, weaponWeight },
-                { DraftOptionType.Augment, augmentWeight },
-                { DraftOptionType.Crew, crewWeight },
-                { DraftOptionType.Resources, resourceWeight },
-                { DraftOptionType.MutationPoints, mutationPointWeight }
+                { RewardOptionType.Scrap, scrapWeight },
+                { RewardOptionType.Weapon, weaponWeight },
+                { RewardOptionType.Augment, augmentWeight },
+                { RewardOptionType.Crew, crewWeight },
+                { RewardOptionType.Resources, resourceWeight },
+                { RewardOptionType.MutationPoints, mutationPointWeight }
             };
 
             var runManager = GameManager.Instance?.CurrentRun;
@@ -134,13 +117,13 @@ namespace VoidBreaker.Events
             // Low fuel? Increase resource weight
             if (state.fuel < 5)
             {
-                weights[DraftOptionType.Resources] *= 1.5f;
+                weights[RewardOptionType.Resources] *= 1.5f;
             }
 
             // Low scrap? Increase scrap weight
             if (state.scrap < 20)
             {
-                weights[DraftOptionType.Scrap] *= 1.3f;
+                weights[RewardOptionType.Scrap] *= 1.3f;
             }
 
             // Few weapons? Increase weapon weight
@@ -150,14 +133,14 @@ namespace VoidBreaker.Events
                 var weaponControl = ship.GetSystem<Ship.WeaponControlSystem>();
                 if (weaponControl != null && weaponControl.Weapons.Count < 2)
                 {
-                    weights[DraftOptionType.Weapon] *= 2f;
+                    weights[RewardOptionType.Weapon] *= 2f;
                 }
             }
 
             // Small crew? Increase crew weight
             if (runManager.CrewManager != null && runManager.CrewManager.CrewCount < 3)
             {
-                weights[DraftOptionType.Crew] *= 1.5f;
+                weights[RewardOptionType.Crew] *= 1.5f;
             }
 
             // Evolution path bonus
@@ -167,19 +150,19 @@ namespace VoidBreaker.Events
                 var dominant = evolution.DominantPath;
                 if (dominant == EvolutionPath.Predator)
                 {
-                    weights[DraftOptionType.Weapon] *= 1.2f;
+                    weights[RewardOptionType.Weapon] *= 1.2f;
                 }
                 else if (dominant == EvolutionPath.Herald)
                 {
-                    weights[DraftOptionType.Crew] *= 1.2f;
+                    weights[RewardOptionType.Crew] *= 1.2f;
                 }
             }
 
             // Sector difficulty affects quality
             if (context.sectorNumber >= 5)
             {
-                weights[DraftOptionType.Weapon] *= 1.3f;
-                weights[DraftOptionType.Augment] *= 1.3f;
+                weights[RewardOptionType.Weapon] *= 1.3f;
+                weights[RewardOptionType.Augment] *= 1.3f;
             }
 
             return weights;
@@ -187,8 +170,8 @@ namespace VoidBreaker.Events
 
         // ==================== OPTION GENERATION ====================
 
-        private DraftOption GenerateSingleOption(Dictionary<DraftOptionType, float> weights,
-            List<DraftOption> existingOptions)
+        private RewardOption GenerateSingleOption(Dictionary<RewardOptionType, float> weights,
+            List<RewardOption> existingOptions)
         {
             // Normalize weights
             float total = 0f;
@@ -197,7 +180,7 @@ namespace VoidBreaker.Events
             // Roll for type
             float roll = UnityEngine.Random.value * total;
             float cumulative = 0f;
-            DraftOptionType selectedType = DraftOptionType.Scrap;
+            RewardOptionType selectedType = RewardOptionType.Scrap;
 
             foreach (var kvp in weights)
             {
@@ -239,7 +222,7 @@ namespace VoidBreaker.Events
             return CreateScrapOption();
         }
 
-        private bool IsDuplicate(DraftOption option, List<DraftOption> existing)
+        private bool IsDuplicate(RewardOption option, List<RewardOption> existing)
         {
             foreach (var e in existing)
             {
@@ -249,37 +232,37 @@ namespace VoidBreaker.Events
             return false;
         }
 
-        private DraftOption CreateOption(DraftOptionType type)
+        private RewardOption CreateOption(RewardOptionType type)
         {
             return type switch
             {
-                DraftOptionType.Scrap => CreateScrapOption(),
-                DraftOptionType.Weapon => CreateWeaponOption(),
-                DraftOptionType.Augment => CreateAugmentOption(),
-                DraftOptionType.Crew => CreateCrewOption(),
-                DraftOptionType.Resources => CreateResourceOption(),
-                DraftOptionType.MutationPoints => CreateMutationPointsOption(),
+                RewardOptionType.Scrap => CreateScrapOption(),
+                RewardOptionType.Weapon => CreateWeaponOption(),
+                RewardOptionType.Augment => CreateAugmentOption(),
+                RewardOptionType.Crew => CreateCrewOption(),
+                RewardOptionType.Resources => CreateResourceOption(),
+                RewardOptionType.MutationPoints => CreateMutationPointsOption(),
                 _ => CreateScrapOption()
             };
         }
 
-        private DraftOption CreateScrapOption()
+        private RewardOption CreateScrapOption()
         {
             int sector = currentContext.sectorNumber;
             int baseScrap = 15 + (sector * 5);
             int variance = UnityEngine.Random.Range(-5, 10);
             int amount = baseScrap + variance;
 
-            return new DraftOption
+            return new RewardOption
             {
-                type = DraftOptionType.Scrap,
+                type = RewardOptionType.Scrap,
                 displayName = $"{amount} Scrap",
                 description = "Raw materials for repairs and upgrades",
                 scrapAmount = amount
             };
         }
 
-        private DraftOption CreateWeaponOption()
+        private RewardOption CreateWeaponOption()
         {
             // In full implementation, would pull from weapon database
             var weapons = new[]
@@ -294,16 +277,16 @@ namespace VoidBreaker.Events
 
             var (name, desc) = weapons[UnityEngine.Random.Range(0, weapons.Length)];
 
-            return new DraftOption
+            return new RewardOption
             {
-                type = DraftOptionType.Weapon,
+                type = RewardOptionType.Weapon,
                 displayName = name,
                 description = desc,
                 weaponId = name.ToLower().Replace(" ", "_")
             };
         }
 
-        private DraftOption CreateAugmentOption()
+        private RewardOption CreateAugmentOption()
         {
             var augments = new[]
             {
@@ -316,16 +299,16 @@ namespace VoidBreaker.Events
 
             var (name, desc) = augments[UnityEngine.Random.Range(0, augments.Length)];
 
-            return new DraftOption
+            return new RewardOption
             {
-                type = DraftOptionType.Augment,
+                type = RewardOptionType.Augment,
                 displayName = name,
                 description = desc,
                 augmentId = name.ToLower().Replace(" ", "_")
             };
         }
 
-        private DraftOption CreateCrewOption()
+        private RewardOption CreateCrewOption()
         {
             var races = new[]
             {
@@ -338,38 +321,38 @@ namespace VoidBreaker.Events
 
             var (race, name, desc) = races[UnityEngine.Random.Range(0, races.Length)];
 
-            return new DraftOption
+            return new RewardOption
             {
-                type = DraftOptionType.Crew,
+                type = RewardOptionType.Crew,
                 displayName = name,
                 description = desc,
                 crewRace = race
             };
         }
 
-        private DraftOption CreateResourceOption()
+        private RewardOption CreateResourceOption()
         {
             int type = UnityEngine.Random.Range(0, 3);
 
             return type switch
             {
-                0 => new DraftOption
+                0 => new RewardOption
                 {
-                    type = DraftOptionType.Resources,
+                    type = RewardOptionType.Resources,
                     displayName = "Fuel Reserves",
                     description = "+5 fuel",
                     fuelAmount = 5
                 },
-                1 => new DraftOption
+                1 => new RewardOption
                 {
-                    type = DraftOptionType.Resources,
+                    type = RewardOptionType.Resources,
                     displayName = "Missile Cache",
                     description = "+4 missiles",
                     missileAmount = 4
                 },
-                _ => new DraftOption
+                _ => new RewardOption
                 {
-                    type = DraftOptionType.Resources,
+                    type = RewardOptionType.Resources,
                     displayName = "Supply Package",
                     description = "+3 fuel, +2 missiles, +1 drone part",
                     fuelAmount = 3,
@@ -379,13 +362,13 @@ namespace VoidBreaker.Events
             };
         }
 
-        private DraftOption CreateMutationPointsOption()
+        private RewardOption CreateMutationPointsOption()
         {
             int amount = UnityEngine.Random.Range(5, 12);
 
-            return new DraftOption
+            return new RewardOption
             {
-                type = DraftOptionType.MutationPoints,
+                type = RewardOptionType.MutationPoints,
                 displayName = $"{amount} Mutation Points",
                 description = "Fuel your ship's evolution",
                 mutationPointAmount = amount
@@ -394,33 +377,33 @@ namespace VoidBreaker.Events
 
         // ==================== REWARD APPLICATION ====================
 
-        private void ApplyReward(DraftOption option)
+        private void ApplyReward(RewardOption option)
         {
             var runManager = GameManager.Instance?.CurrentRun;
             if (runManager == null) return;
 
             switch (option.type)
             {
-                case DraftOptionType.Scrap:
+                case RewardOptionType.Scrap:
                     runManager.AddScrap(option.scrapAmount);
                     break;
 
-                case DraftOptionType.Weapon:
+                case RewardOptionType.Weapon:
                     // Would add weapon to ship
                     Debug.Log($"[Reward] Adding weapon: {option.weaponId}");
                     break;
 
-                case DraftOptionType.Augment:
+                case RewardOptionType.Augment:
                     // Would add augment
                     Debug.Log($"[Reward] Adding augment: {option.augmentId}");
                     break;
 
-                case DraftOptionType.Crew:
+                case RewardOptionType.Crew:
                     // Would hire crew
                     Debug.Log($"[Reward] Hiring crew: {option.crewRace}");
                     break;
 
-                case DraftOptionType.Resources:
+                case RewardOptionType.Resources:
                     if (option.fuelAmount > 0)
                         runManager.AddFuel(option.fuelAmount);
                     if (option.missileAmount > 0)
@@ -428,7 +411,7 @@ namespace VoidBreaker.Events
                     // Drone parts would be similar
                     break;
 
-                case DraftOptionType.MutationPoints:
+                case RewardOptionType.MutationPoints:
                     runManager.AddMutationPoints(option.mutationPointAmount, "draft_reward");
                     break;
             }
@@ -438,9 +421,9 @@ namespace VoidBreaker.Events
     // ==================== DATA STRUCTURES ====================
 
     [Serializable]
-    public class DraftOption
+    public class RewardOption
     {
-        public DraftOptionType type;
+        public RewardOptionType type;
         public string displayName;
         public string description;
 
@@ -455,7 +438,7 @@ namespace VoidBreaker.Events
         public int mutationPointAmount;
     }
 
-    public enum DraftOptionType
+    public enum RewardOptionType
     {
         Scrap,
         Weapon,
@@ -466,7 +449,7 @@ namespace VoidBreaker.Events
     }
 
     [Serializable]
-    public struct DraftContext
+    public struct RewardContext
     {
         public int sectorNumber;
         public BeaconType encounterType;

@@ -72,6 +72,11 @@ namespace VoidBreaker.Ship
             Debug.Log($"[{systemName}] Initialized at level {currentLevel}");
         }
 
+        public virtual void Initialize(ShipController ship, int startingLevel)
+        {
+            Initialize(startingLevel);
+        }
+
         public virtual void Upgrade()
         {
             if (currentLevel >= maxLevel)
@@ -86,7 +91,7 @@ namespace VoidBreaker.Ship
 
         // ==================== POWER ====================
 
-        public virtual void OnPowerChanged(int newPower)
+        public virtual void SetPowerLevel(int newPower)
         {
             SetPower(newPower);
         }
@@ -172,6 +177,16 @@ namespace VoidBreaker.Ship
             isManned = false;
 
             Debug.Log($"[{systemName}] No longer manned");
+        }
+
+        public virtual void OnUnmanned()
+        {
+            OnCrewLeft();
+        }
+
+        public virtual void OnDamaged(int amount)
+        {
+            TakeDamage(amount);
         }
 
         // ==================== UPDATE ====================

@@ -1,7 +1,9 @@
 {
     "name": "VoidBreaker",
     "rootNamespace": "VoidBreaker",
-    "references": [],
+    "references": [
+        "Unity.TextMeshPro"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

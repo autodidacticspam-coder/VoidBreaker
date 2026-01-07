@@ -1,4 +1,5 @@
 using UnityEngine;
+using VoidBreaker.Ship;
 
 namespace VoidBreaker.Core
 {
