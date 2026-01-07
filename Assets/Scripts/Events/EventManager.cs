@@ -874,11 +874,11 @@ namespace VoidBreaker.Events
     [Serializable]
     public class EventEffect
     {
-        public EventEventOutcomeType Type;
+        public EventOutcomeType Type;
         public int Amount;
     }
 
-    public enum EventEventOutcomeType
+    public enum EventOutcomeType
     {
         Nothing,
         GainScrap,
