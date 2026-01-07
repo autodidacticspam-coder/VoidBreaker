@@ -25,7 +25,7 @@ namespace VoidBreaker.Ship
         {
             base.Initialize(ship, level);
             systemType = SystemType.Piloting;
-            maxPower = 1; // Piloting only needs 1 power
+            maxLevel = 1; // Piloting only needs 1 power bar level
 
             // Level 2+ provides autopilot
             hasAutopilot = level >= 2;
@@ -34,7 +34,7 @@ namespace VoidBreaker.Ship
 
         private int CalculateEvasion()
         {
-            if (!IsOperational || AllocatedPower == 0)
+            if (!IsOperational || PowerAllocated == 0)
                 return 0;
 
             int evasion = baseEvasion;
@@ -47,7 +47,7 @@ namespace VoidBreaker.Ship
                 // Skill bonus from pilot
                 if (ManningCrew != null)
                 {
-                    int skillBonus = ManningCrew.GetSkillLevel(CrewSkill.Piloting) * 2;
+                    int skillBonus = ManningCrew.Skills.GetSkill(SkillType.Piloting) * 2;
                     evasion += skillBonus;
                 }
             }
@@ -63,7 +63,7 @@ namespace VoidBreaker.Ship
             }
 
             // Apply damage penalty
-            evasion -= damageLevel * 5;
+            evasion -= DamageLevel * 5;
 
             return Mathf.Max(0, evasion);
         }
@@ -72,7 +72,7 @@ namespace VoidBreaker.Ship
         {
             // Need pilot or autopilot to jump
             if (!IsOperational) return false;
-            if (AllocatedPower == 0) return false;
+            if (PowerAllocated == 0) return false;
 
             return IsManned || hasAutopilot;
         }
@@ -82,9 +82,9 @@ namespace VoidBreaker.Ship
             mannedEvasion = evasion;
         }
 
-        public override void OnManned(CrewMember crew)
+        public override void OnCrewManned(ICrewMember crew)
         {
-            base.OnManned(crew);
+            base.OnCrewManned(crew);
             Debug.Log($"[PilotingSystem] {crew.CrewName} at the helm - Evasion: {CurrentEvasion}%");
         }
 

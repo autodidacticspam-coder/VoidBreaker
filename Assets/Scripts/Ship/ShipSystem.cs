@@ -55,7 +55,7 @@ namespace VoidBreaker.Ship
         public event Action<ISystem> OnSystemDamaged;
         public event Action<ISystem> OnSystemRepaired;
         public event Action<ISystem> OnSystemDestroyed;
-        public event Action<ISystem> OnPowerChanged;
+        public event Action<ISystem> OnSystemPowerChanged;
 
         protected virtual void Awake()
         {
@@ -107,7 +107,7 @@ namespace VoidBreaker.Ship
             int maxAllowable = Mathf.Min(currentLevel, maxHealth - (maxHealth - currentHealth));
             powerAllocated = Mathf.Clamp(power, 0, maxAllowable);
 
-            OnPowerChanged?.Invoke(this);
+            OnSystemPowerChanged?.Invoke(this);
         }
 
         // ==================== DAMAGE ====================

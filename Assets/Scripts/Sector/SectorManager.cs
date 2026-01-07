@@ -502,4 +502,28 @@ namespace VoidBreaker.Sector
         public SectorType type;
         public int beaconCount;
     }
+
+    /// <summary>
+    /// Data structure for beacon generation.
+    /// </summary>
+    [Serializable]
+    public class BeaconData
+    {
+        public string id;
+        public BeaconType type;
+        public int layer;
+        public UnityEngine.Vector2 position;
+        public List<string> connections = new List<string>();
+    }
+
+    /// <summary>
+    /// Extended sector data for generation.
+    /// </summary>
+    [Serializable]
+    public class GeneratedSectorData
+    {
+        public int sectorNumber;
+        public SectorType sectorType;
+        public List<BeaconData> beacons;
+    }
 }

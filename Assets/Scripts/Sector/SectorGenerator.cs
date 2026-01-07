@@ -25,9 +25,9 @@ namespace VoidBreaker.Sector
         /// <summary>
         /// Generates a new sector layout.
         /// </summary>
-        public SectorData GenerateSector(int sectorNumber, SectorType sectorType)
+        public GeneratedSectorData GenerateSector(int sectorNumber, SectorType sectorType)
         {
-            var data = new SectorData
+            var data = new GeneratedSectorData
             {
                 sectorNumber = sectorNumber,
                 sectorType = sectorType,
@@ -139,35 +139,5 @@ namespace VoidBreaker.Sector
                 }
             }
         }
-    }
-
-    [System.Serializable]
-    public class SectorData
-    {
-        public int sectorNumber;
-        public SectorType sectorType;
-        public List<BeaconData> beacons;
-    }
-
-    [System.Serializable]
-    public class BeaconData
-    {
-        public string id;
-        public BeaconType type;
-        public int layer;
-        public Vector2 position;
-        public List<string> connections = new List<string>();
-    }
-
-    public enum SectorType
-    {
-        Civilian,
-        Military,
-        Pirate,
-        Rebel,
-        Federation,
-        Nebula,
-        Asteroid,
-        Final
     }
 }
