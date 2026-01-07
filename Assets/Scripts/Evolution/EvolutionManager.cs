@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using VoidBreaker.Core;
+using VoidBreaker.Data;
 using VoidBreaker.Ship;
 
 namespace VoidBreaker.Evolution

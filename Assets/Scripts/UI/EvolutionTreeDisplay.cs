@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using VoidBreaker.Core;
+using VoidBreaker.Data;
 using VoidBreaker.Evolution;
 
 namespace VoidBreaker.UI
@@ -275,7 +276,7 @@ namespace VoidBreaker.UI
                 MutationEffectType.BonusShields => $"{sign}{value} Shield Layers",
                 MutationEffectType.BonusHull => $"{sign}{value} Max Hull",
                 MutationEffectType.BonusCrew => $"{sign}{value} Crew Combat",
-                MutationEffectType.BonusRepair => $"{sign}{value} Repair Speed",
+                MutationEffectType.CrewRepair => $"{sign}{value} Repair Speed",
                 MutationEffectType.CloakDuration => $"{sign}{value} Cloak Duration",
                 MutationEffectType.ScrapBonus => $"{sign}{value} Scrap from Enemies",
                 MutationEffectType.UnlockEnding => "Unlocks Final Boss",
