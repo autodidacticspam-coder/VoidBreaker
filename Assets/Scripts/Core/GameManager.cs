@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VoidBreaker.Sector;
+using VoidBreaker.Data;
 
 namespace VoidBreaker.Core
 {

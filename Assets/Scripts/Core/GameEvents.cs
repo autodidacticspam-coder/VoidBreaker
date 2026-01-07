@@ -603,6 +603,13 @@ namespace VoidBreaker.Core
         public OutcomeType outcomeType;
     }
 
+    public struct EventChoiceMadeArgs
+    {
+        public string eventId;
+        public int choiceIndex;
+        public string choiceText;
+    }
+
     public struct EventResultArgs
     {
         public string text;
@@ -622,13 +629,13 @@ namespace VoidBreaker.Core
 
     public struct DraftOptionsArgs
     {
-        public DraftOption[] options;
-        public DraftContext context;
+        public RewardOption[] options;
+        public RewardContext context;
     }
 
     public struct DraftChoiceMadeArgs
     {
-        public DraftOption chosen;
+        public RewardOption chosen;
         public int choiceIndex;
     }
 

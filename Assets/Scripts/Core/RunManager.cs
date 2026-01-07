@@ -1,6 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VoidBreaker.Ship;
+using VoidBreaker.Crew;
+using VoidBreaker.Sector;
+using VoidBreaker.Evolution;
+using VoidBreaker.Combat;
+using VoidBreaker.Events;
+using VoidBreaker.Data;
 
 namespace VoidBreaker.Core
 {

@@ -96,6 +96,12 @@ namespace VoidBreaker.Ship
             SetPower(newPower);
         }
 
+        // ISystem interface implementation
+        public virtual void OnPowerChanged(int newPower)
+        {
+            SetPower(newPower);
+        }
+
         protected virtual void SetPower(int power)
         {
             int maxAllowable = Mathf.Min(currentLevel, maxHealth - (maxHealth - currentHealth));

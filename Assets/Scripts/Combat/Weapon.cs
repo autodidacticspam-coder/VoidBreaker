@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using VoidBreaker.Core;
 using VoidBreaker.Ship;
+using VoidBreaker.Data;
 
 namespace VoidBreaker.Combat
 {

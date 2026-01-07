@@ -244,7 +244,7 @@ namespace VoidBreaker.UI
             GoBack();
         }
 
-        public void ShowGameOver(bool victory, GameEndingArgs ending = null)
+        public void ShowGameOver(bool victory, GameEndingArgs? ending = null)
         {
             SetState(UIState.GameOver);
             // Configure game over panel with victory/defeat state
@@ -255,7 +255,7 @@ namespace VoidBreaker.UI
             SetState(UIState.Evolution);
         }
 
-        public void ShowDraft(DraftOption[] options)
+        public void ShowDraft(RewardOption[] options)
         {
             SetState(UIState.Draft);
             draftDisplay?.DisplayOptions(options);
