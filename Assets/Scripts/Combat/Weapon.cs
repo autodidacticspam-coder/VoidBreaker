@@ -3,6 +3,7 @@ using UnityEngine;
 using VoidBreaker.Core;
 using VoidBreaker.Ship;
 using VoidBreaker.Data;
+using System.Linq;
 
 namespace VoidBreaker.Combat
 {
@@ -223,9 +224,9 @@ namespace VoidBreaker.Combat
                 type = WeaponTypeToDamageType(),
                 ignoresShields = WeaponType == WeaponType.Missile || WeaponType == WeaponType.Bomb,
                 causesBreach = definition?.appliedEffects != null &&
-                               Array.Exists(definition.appliedEffects, e => e == StatusEffect.Breach),
+                               definition.appliedEffects.Any(e => e.effectType == WeaponEffectType.Breach),
                 causesFire = definition?.appliedEffects != null &&
-                             Array.Exists(definition.appliedEffects, e => e == StatusEffect.Fire),
+                             definition.appliedEffects.Any(e => e.effectType == WeaponEffectType.Fire),
                 ionDamage = WeaponType == WeaponType.Ion ? Damage : 0
             };
         }
@@ -258,22 +259,6 @@ namespace VoidBreaker.Combat
         }
     }
 
-    public enum WeaponType
-    {
-        Laser,
-        Missile,
-        Beam,
-        Ion,
-        Bomb,
-        Flak
-    }
-
-    public enum StatusEffect
-    {
-        None,
-        Fire,
-        Breach,
-        Stun,
-        Lockdown
-    }
+    // WeaponType enum is defined in VoidBreaker.Core.CommonTypes
+    // StatusEffect enum removed - using WeaponEffectType from VoidBreaker.Data instead
 }

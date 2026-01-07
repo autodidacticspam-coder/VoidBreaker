@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using VoidBreaker.Core;
+using VoidBreaker.Data;
 
 namespace VoidBreaker.Evolution
 {
@@ -107,37 +108,7 @@ namespace VoidBreaker.Evolution
         }
     }
 
-    public enum MutationEffectType
-    {
-        // Stats
-        BonusHull,
-        BonusEvasion,
-        BonusDamage,
-        DamageReduction,
-
-        // Capacity
-        WeaponSlot,
-        CrewSlot,
-
-        // Phantom specific
-        CloakDuration,
-        PhaseChance,
-        CrewSpeed,
-        DetectionDelay,
-
-        // Herald specific
-        BonusDiplomacy,
-        ShopDiscount,
-        RelationshipBonus,
-
-        // Abilities
-        UnlockAbility,
-        UnlockEnding,
-
-        // Combat start
-        StartCloaked,
-        StartWithAlly
-    }
+    // MutationEffectType enum is defined in VoidBreaker.Data.MutationDefinition
 
     /// <summary>
     /// Contains all mutations for a single evolution path.

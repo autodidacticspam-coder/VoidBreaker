@@ -735,24 +735,5 @@ namespace VoidBreaker.Core
         SectorStart
     }
 
-    public class DraftOption
-    {
-        public DraftOptionType type;
-        public string displayName;
-        public string description;
-        public UnityEngine.Sprite icon;
-        public object data;
-    }
-
-    public enum DraftOptionType
-    {
-        Weapon,
-        Augment,
-        Crew,
-        Scrap,
-        Fuel,
-        Drone,
-        MutationPoints,
-        Resources
-    }
+    // Note: DraftOption and DraftOptionType are defined in DraftManager.cs
 }

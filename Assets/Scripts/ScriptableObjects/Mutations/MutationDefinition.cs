@@ -63,6 +63,8 @@ namespace VoidBreaker.Data
         SensorEvasion,
         SilentRunning,
         AmbushDamage,
+        PhaseChance,
+        DetectionDelay,
 
         // Diplomacy (Herald)
         ShopDiscount,
@@ -71,6 +73,8 @@ namespace VoidBreaker.Data
         EventBonuses,
         ScrapBonus,
         ReputationGain,
+        BonusDiplomacy,
+        RelationshipBonus,
 
         // Defense
         BonusShields,
@@ -83,11 +87,21 @@ namespace VoidBreaker.Data
         CrewCombat,
         CrewRepair,
         CrewHealing,
+        CrewSpeed,
+
+        // Capacity
+        WeaponSlot,
+        CrewSlot,
 
         // Special
         UnlockSystem,
         UnlockWeapon,
         UnlockEnding,
-        SpecialAbility
+        UnlockAbility,
+        SpecialAbility,
+
+        // Combat Start
+        StartCloaked,
+        StartWithAlly
     }
 }

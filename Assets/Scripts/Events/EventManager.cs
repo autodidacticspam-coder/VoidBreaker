@@ -116,7 +116,7 @@ namespace VoidBreaker.Events
                         Text = "Continue onward.",
                         Outcomes = new List<EventOutcome>
                         {
-                            new EventOutcome { Type = OutcomeType.Nothing, Weight = 100 }
+                            new EventOutcome { Type = EventOutcomeType.Nothing, Weight = 100 }
                         }
                     }
                 }
@@ -226,72 +226,72 @@ namespace VoidBreaker.Events
         {
             switch (outcome.Type)
             {
-                case OutcomeType.Nothing:
+                case EventOutcomeType.Nothing:
                     break;
 
-                case OutcomeType.GainScrap:
+                case EventOutcomeType.GainScrap:
                     GameManager.Instance?.CurrentRun?.AddScrap(outcome.Amount);
                     Debug.Log($"[EventManager] Gained {outcome.Amount} scrap");
                     break;
 
-                case OutcomeType.LoseScrap:
+                case EventOutcomeType.LoseScrap:
                     GameManager.Instance?.CurrentRun?.SpendScrap(outcome.Amount);
                     Debug.Log($"[EventManager] Lost {outcome.Amount} scrap");
                     break;
 
-                case OutcomeType.GainFuel:
+                case EventOutcomeType.GainFuel:
                     GameManager.Instance?.CurrentRun?.AddFuel(outcome.Amount);
                     break;
 
-                case OutcomeType.LoseFuel:
+                case EventOutcomeType.LoseFuel:
                     GameManager.Instance?.CurrentRun?.SpendFuel(outcome.Amount);
                     break;
 
-                case OutcomeType.GainCrew:
+                case EventOutcomeType.GainCrew:
                     SpawnRewardCrew(outcome.CrewRace);
                     break;
 
-                case OutcomeType.LoseCrew:
+                case EventOutcomeType.LoseCrew:
                     KillRandomCrew();
                     break;
 
-                case OutcomeType.GainWeapon:
+                case EventOutcomeType.GainWeapon:
                     GiveWeapon(outcome.WeaponId);
                     break;
 
-                case OutcomeType.TakeDamage:
+                case EventOutcomeType.TakeDamage:
                     playerShip.TakeDamage(outcome.Amount);
                     break;
 
-                case OutcomeType.RepairHull:
+                case EventOutcomeType.RepairHull:
                     playerShip.RepairHull(outcome.Amount);
                     break;
 
-                case OutcomeType.StartCombat:
+                case EventOutcomeType.StartCombat:
                     StartCombatFromEvent(outcome.EnemyId);
                     break;
 
-                case OutcomeType.GainMutationPoints:
+                case EventOutcomeType.GainMutationPoints:
                     GameManager.Instance?.CurrentRun?.AddMutationPoints(outcome.Amount);
                     break;
 
-                case OutcomeType.UnlockMutation:
+                case EventOutcomeType.UnlockMutation:
                     UnlockMutation(outcome.MutationId);
                     break;
 
-                case OutcomeType.GainAugment:
+                case EventOutcomeType.GainAugment:
                     GiveAugment(outcome.AugmentId);
                     break;
 
-                case OutcomeType.SystemDamage:
+                case EventOutcomeType.SystemDamage:
                     DamageRandomSystem(outcome.Amount);
                     break;
 
-                case OutcomeType.CrewDamage:
+                case EventOutcomeType.CrewDamage:
                     DamageAllCrew(outcome.Amount);
                     break;
 
-                case OutcomeType.EvolutionBonus:
+                case EventOutcomeType.EvolutionBonus:
                     ApplyEvolutionBonus(outcome.EvolutionPath, outcome.Amount);
                     break;
             }
@@ -425,21 +425,21 @@ namespace VoidBreaker.Events
                         {
                             new EventOutcome
                             {
-                                Type = OutcomeType.GainScrap,
+                                Type = EventOutcomeType.GainScrap,
                                 Amount = 30,
                                 Weight = 50,
                                 ResultText = "You find useful salvage in the cargo bay. 30 scrap acquired."
                             },
                             new EventOutcome
                             {
-                                Type = OutcomeType.StartCombat,
+                                Type = EventOutcomeType.StartCombat,
                                 EnemyId = "pirate_scout",
                                 Weight = 30,
                                 ResultText = "It's a trap! Pirates emerge from hiding!"
                             },
                             new EventOutcome
                             {
-                                Type = OutcomeType.GainCrew,
+                                Type = EventOutcomeType.GainCrew,
                                 CrewRace = CrewRace.Human,
                                 Weight = 20,
                                 ResultText = "You find a survivor floating in stasis. They join your crew."
@@ -452,7 +452,7 @@ namespace VoidBreaker.Events
                         Text = "It's not worth the risk. Move on.",
                         Outcomes = new List<EventOutcome>
                         {
-                            new EventOutcome { Type = OutcomeType.Nothing, Weight = 100 }
+                            new EventOutcome { Type = EventOutcomeType.Nothing, Weight = 100 }
                         }
                     }
                 }
@@ -477,13 +477,13 @@ namespace VoidBreaker.Events
                         {
                             new EventOutcome
                             {
-                                Type = OutcomeType.LoseScrap,
+                                Type = EventOutcomeType.LoseScrap,
                                 Amount = 15,
                                 Weight = 100
                             },
                             new EventOutcome
                             {
-                                Type = OutcomeType.GainFuel,
+                                Type = EventOutcomeType.GainFuel,
                                 Amount = 3,
                                 Weight = 100,
                                 ResultText = "Fair trade. 3 fuel acquired."
@@ -499,13 +499,13 @@ namespace VoidBreaker.Events
                         {
                             new EventOutcome
                             {
-                                Type = OutcomeType.LoseScrap,
+                                Type = EventOutcomeType.LoseScrap,
                                 Amount = 20,
                                 Weight = 100
                             },
                             new EventOutcome
                             {
-                                Type = OutcomeType.RepairHull,
+                                Type = EventOutcomeType.RepairHull,
                                 Amount = 10,
                                 Weight = 100,
                                 ResultText = "The merchant's crew makes quick work of your hull damage."
@@ -518,7 +518,7 @@ namespace VoidBreaker.Events
                         Text = "No thanks.",
                         Outcomes = new List<EventOutcome>
                         {
-                            new EventOutcome { Type = OutcomeType.Nothing, Weight = 100 }
+                            new EventOutcome { Type = EventOutcomeType.Nothing, Weight = 100 }
                         }
                     }
                 }
@@ -544,28 +544,28 @@ namespace VoidBreaker.Events
                         {
                             new EventOutcome
                             {
-                                Type = OutcomeType.GainMutationPoints,
+                                Type = EventOutcomeType.GainMutationPoints,
                                 Amount = 15,
                                 Weight = 40,
                                 ResultText = "The energy washes over your ship. Something inside it... changes. (+15 Mutation Points)"
                             },
                             new EventOutcome
                             {
-                                Type = OutcomeType.SystemDamage,
+                                Type = EventOutcomeType.SystemDamage,
                                 Amount = 2,
                                 Weight = 30,
                                 ResultText = "A surge of energy damages your systems!"
                             },
                             new EventOutcome
                             {
-                                Type = OutcomeType.UnlockMutation,
+                                Type = EventOutcomeType.UnlockMutation,
                                 MutationId = "void_touched",
                                 Weight = 10,
                                 ResultText = "Your ship resonates with the void itself. Something awakens within it."
                             },
                             new EventOutcome
                             {
-                                Type = OutcomeType.Nothing,
+                                Type = EventOutcomeType.Nothing,
                                 Weight = 20,
                                 ResultText = "The signal fades before you can reach it."
                             }
@@ -577,7 +577,7 @@ namespace VoidBreaker.Events
                         Text = "The nebula is dangerous enough. Keep moving.",
                         Outcomes = new List<EventOutcome>
                         {
-                            new EventOutcome { Type = OutcomeType.Nothing, Weight = 100 }
+                            new EventOutcome { Type = EventOutcomeType.Nothing, Weight = 100 }
                         }
                     }
                 }
@@ -603,7 +603,7 @@ namespace VoidBreaker.Events
                         {
                             new EventOutcome
                             {
-                                Type = OutcomeType.EvolutionBonus,
+                                Type = EventOutcomeType.EvolutionBonus,
                                 EvolutionPath = EvolutionPath.Predator,
                                 Amount = 20,
                                 Weight = 100,
@@ -619,7 +619,7 @@ namespace VoidBreaker.Events
                         {
                             new EventOutcome
                             {
-                                Type = OutcomeType.EvolutionBonus,
+                                Type = EventOutcomeType.EvolutionBonus,
                                 EvolutionPath = EvolutionPath.Phantom,
                                 Amount = 20,
                                 Weight = 100,
@@ -635,7 +635,7 @@ namespace VoidBreaker.Events
                         {
                             new EventOutcome
                             {
-                                Type = OutcomeType.EvolutionBonus,
+                                Type = EventOutcomeType.EvolutionBonus,
                                 EvolutionPath = EvolutionPath.Herald,
                                 Amount = 20,
                                 Weight = 100,
@@ -666,14 +666,14 @@ namespace VoidBreaker.Events
                         {
                             new EventOutcome
                             {
-                                Type = OutcomeType.StartCombat,
+                                Type = EventOutcomeType.StartCombat,
                                 EnemyId = "pirate_fighter",
                                 Weight = 70,
                                 ResultText = "You engage the pirates!"
                             },
                             new EventOutcome
                             {
-                                Type = OutcomeType.GainScrap,
+                                Type = EventOutcomeType.GainScrap,
                                 Amount = 25,
                                 Weight = 30,
                                 ResultText = "The pirates flee at your approach. The grateful civilians reward you."
@@ -688,7 +688,7 @@ namespace VoidBreaker.Events
                         {
                             new EventOutcome
                             {
-                                Type = OutcomeType.Nothing,
+                                Type = EventOutcomeType.Nothing,
                                 Weight = 100,
                                 ResultText = "You leave the transport to its fate."
                             }
@@ -724,7 +724,7 @@ namespace VoidBreaker.Events
                         {
                             new EventOutcome
                             {
-                                Type = OutcomeType.Nothing,
+                                Type = EventOutcomeType.Nothing,
                                 Weight = 100,
                                 ResultText = "Quest started: Follow the ancient signal."
                             }
@@ -736,7 +736,7 @@ namespace VoidBreaker.Events
                         Text = "Ancient doesn't mean valuable. Ignore it.",
                         Outcomes = new List<EventOutcome>
                         {
-                            new EventOutcome { Type = OutcomeType.Nothing, Weight = 100 }
+                            new EventOutcome { Type = EventOutcomeType.Nothing, Weight = 100 }
                         }
                     }
                 }
@@ -833,7 +833,7 @@ namespace VoidBreaker.Events
         public EventOutcome ResolveOutcome()
         {
             if (Outcomes.Count == 0)
-                return new EventOutcome { Type = OutcomeType.Nothing };
+                return new EventOutcome { Type = EventOutcomeType.Nothing };
 
             float totalWeight = 0f;
             foreach (var outcome in Outcomes)
@@ -858,7 +858,7 @@ namespace VoidBreaker.Events
     [Serializable]
     public class EventOutcome
     {
-        public OutcomeType Type;
+        public EventOutcomeType Type;
         public int Amount;
         public float Weight = 100f;
         public string ResultText;
@@ -874,11 +874,11 @@ namespace VoidBreaker.Events
     [Serializable]
     public class EventEffect
     {
-        public OutcomeType Type;
+        public EventEventOutcomeType Type;
         public int Amount;
     }
 
-    public enum OutcomeType
+    public enum EventEventOutcomeType
     {
         Nothing,
         GainScrap,

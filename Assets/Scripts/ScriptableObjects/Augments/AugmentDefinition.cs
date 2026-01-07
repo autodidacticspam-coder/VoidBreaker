@@ -88,11 +88,5 @@ namespace VoidBreaker.Data
         PreIgniter
     }
 
-    public enum AugmentRarity
-    {
-        Common,
-        Uncommon,
-        Rare,
-        Legendary
-    }
+    // AugmentRarity enum is defined in VoidBreaker.Core.CommonTypes
 }
