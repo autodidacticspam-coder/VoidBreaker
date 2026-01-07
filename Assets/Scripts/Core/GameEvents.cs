@@ -175,6 +175,17 @@ namespace VoidBreaker.Core
         public static void TriggerDraftOptionsPresented(DraftOptionsArgs args) => OnDraftOptionsPresented?.Invoke(args);
         public static void TriggerDraftChoiceMade(DraftChoiceMadeArgs args) => OnDraftChoiceMade?.Invoke(args);
 
+        // Additional draft events
+        public static event Action<DraftStartArgs> OnDraftStart;
+        public static event Action<DraftCompleteArgs> OnDraftComplete;
+        public static event Action<EventChoiceMadeArgs> OnEventChoiceMade;
+        public static event Action<WeaponFiredArgs> OnWeaponFired;
+
+        public static void TriggerDraftStart(DraftStartArgs args) => OnDraftStart?.Invoke(args);
+        public static void TriggerDraftComplete(DraftCompleteArgs args) => OnDraftComplete?.Invoke(args);
+        public static void TriggerEventChoiceMade(EventChoiceMadeArgs args) => OnEventChoiceMade?.Invoke(args);
+        public static void TriggerWeaponFired(WeaponFiredArgs args) => OnWeaponFired?.Invoke(args);
+
         // ==================== GAMEPLAY CONTROLLER EVENTS ====================
         // These events are used by GameplayController for gameplay flow
 
@@ -262,6 +273,10 @@ namespace VoidBreaker.Core
             OnItemPurchased = null;
             OnDraftOptionsPresented = null;
             OnDraftChoiceMade = null;
+            OnDraftStart = null;
+            OnDraftComplete = null;
+            OnEventChoiceMade = null;
+            OnWeaponFired = null;
             OnBeaconSelected = null;
             OnCombatStart = null;
             OnCombatEnd = null;
@@ -397,6 +412,9 @@ namespace VoidBreaker.Core
         public int previousLayers;
         public int maxLayers;
         public float rechargeProgress;
+
+        // Alias for compatibility
+        public int newLayers => currentLayers;
     }
 
     public struct RoomBreachArgs
@@ -687,5 +705,54 @@ namespace VoidBreaker.Core
     {
         public int SectorNumber;
         public SectorType SectorType;
+    }
+
+    public struct DraftStartArgs
+    {
+        public DraftContext context;
+        public DraftOption[] options;
+    }
+
+    public struct DraftCompleteArgs
+    {
+        public DraftOption selectedOption;
+        public int optionIndex;
+    }
+
+    public struct WeaponFiredArgs
+    {
+        public VoidBreaker.Combat.Weapon weapon;
+        public VoidBreaker.Ship.ShipController source;
+        public VoidBreaker.Ship.ShipController target;
+        public VoidBreaker.Ship.Room targetRoom;
+    }
+
+    public enum DraftContext
+    {
+        PostCombat,
+        Event,
+        Shop,
+        SectorStart
+    }
+
+    public class DraftOption
+    {
+        public DraftOptionType type;
+        public string displayName;
+        public string description;
+        public UnityEngine.Sprite icon;
+        public object data;
+    }
+
+    public enum DraftOptionType
+    {
+        Weapon,
+        Augment,
+        Crew,
+        Scrap,
+        Fuel,
+        Drone,
+        MutationPoints,
+        Resources
     }
 }

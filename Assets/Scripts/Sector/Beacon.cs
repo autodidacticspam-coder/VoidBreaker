@@ -43,6 +43,11 @@ namespace VoidBreaker.Sector
         public bool IsRevealed => isRevealed;
         public IReadOnlyList<Beacon> Connections => connections;
 
+        // Property aliases for compatibility
+        public bool Visited => isVisited;
+        public bool Revealed => isRevealed;
+        public BeaconType BeaconType => type;
+
         /// <summary>
         /// String ID for this beacon (combination of index and column).
         /// </summary>
@@ -283,7 +288,9 @@ namespace VoidBreaker.Sector
         Empty,
         Exit,
         Quest,
-        Danger
+        Danger,
+        Elite,
+        Store
     }
 
     [Serializable]

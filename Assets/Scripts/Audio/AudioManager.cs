@@ -208,6 +208,16 @@ namespace VoidBreaker.Audio
 
         // ==================== MUSIC ====================
 
+        // Public volume properties
+        public float MasterVolume => masterVolume;
+        public float MusicVolume => musicVolume;
+        public float SFXVolume => sfxVolume;
+
+        /// <summary>
+        /// Alias for PlayMusic for compatibility.
+        /// </summary>
+        public void SetMusicState(MusicState state) => PlayMusic(state);
+
         public void PlayMusic(MusicState state)
         {
             if (currentMusicState == state) return;

@@ -480,7 +480,8 @@ namespace VoidBreaker.Sector
         Nebula,
         Abandoned,
         Hegemony,
-        TheBreach
+        TheBreach,
+        FinalBoss
     }
 
     [Serializable]

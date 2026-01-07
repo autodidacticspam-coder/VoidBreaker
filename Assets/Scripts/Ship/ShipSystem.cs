@@ -20,6 +20,11 @@ namespace VoidBreaker.Ship
         [Header("Power")]
         [SerializeField] protected bool requiresPower = true;
         [SerializeField] protected int powerAllocated = 0;
+        [SerializeField] protected int maxPower = 4;
+        [SerializeField] protected int requiredPowerToOperate = 1;
+
+        [Header("Ship Reference")]
+        [SerializeField] protected ShipController parentShip;
 
         [Header("Damage")]
         [SerializeField] protected int maxHealth = 3;
@@ -47,6 +52,12 @@ namespace VoidBreaker.Ship
         public bool IsManned => isManned && manningCrew != null;
         public bool RequiresPower => requiresPower;
         public ICrewMember ManningCrew => manningCrew;
+        public ShipController ParentShip => parentShip;
+
+        // Protected aliases for child classes
+        protected int AllocatedPower => powerAllocated;
+        protected int RequiredPowerToOperate => requiredPowerToOperate;
+        protected int damageLevel => DamageLevel;
 
         // Effective power (reduced by damage and ion)
         public int EffectivePower => Mathf.Max(0, powerAllocated - DamageLevel - ionDamage);
@@ -193,6 +204,20 @@ namespace VoidBreaker.Ship
         public virtual void OnDamaged(int amount)
         {
             TakeDamage(amount);
+        }
+
+        // ==================== HACKING ====================
+
+        public virtual void ApplyHack(float duration)
+        {
+            // Override in specific systems that can be hacked
+            Debug.Log($"[{systemName}] Hacked for {duration}s");
+        }
+
+        public virtual void RemoveHack()
+        {
+            // Override in specific systems
+            Debug.Log($"[{systemName}] Hack removed");
         }
 
         // ==================== UPDATE ====================

@@ -34,6 +34,7 @@ namespace VoidBreaker.Core
 
     public enum SystemType
     {
+        None,
         Reactor,
         Engines,
         Shields,

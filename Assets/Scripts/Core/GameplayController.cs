@@ -8,6 +8,7 @@ using VoidBreaker.Events;
 using VoidBreaker.Audio;
 using VoidBreaker.UI;
 using VoidBreaker.Data;
+using VoidBreaker.Save;
 
 namespace VoidBreaker.Core
 {
@@ -184,7 +185,7 @@ namespace VoidBreaker.Core
             yield return new WaitForSeconds(0.5f);
 
             // Mark beacon as visited
-            beacon.isVisited = true;
+            beacon.SetVisited();
             GameManager.Instance.SetCurrentBeacon(beacon);
 
             // Handle beacon content
@@ -194,23 +195,23 @@ namespace VoidBreaker.Core
         private IEnumerator ProcessBeaconContent(Beacon beacon)
         {
             // Check for combat
-            if (beacon.hasEnemy)
+            if (beacon.HasEnemy)
             {
                 yield return StartCombatEncounter(beacon);
             }
             // Check for event
-            else if (!string.IsNullOrEmpty(beacon.eventId))
+            else if (!string.IsNullOrEmpty(beacon.EventId))
             {
                 yield return new WaitForSeconds(eventDisplayDelay);
-                eventManager?.TriggerEvent(beacon.eventId);
+                eventManager?.TriggerEvent(beacon.EventId);
             }
             // Check for shop
-            else if (beacon.type == BeaconType.Store)
+            else if (beacon.Type == BeaconType.Store)
             {
                 GameEvents.TriggerShopEnter(new ShopEnterArgs());
             }
             // Check for exit
-            else if (beacon.type == BeaconType.Exit)
+            else if (beacon.Type == BeaconType.Exit)
             {
                 CheckForSectorExit();
             }
@@ -226,10 +227,10 @@ namespace VoidBreaker.Core
             yield return new WaitForSeconds(combatStartDelay);
 
             // Spawn enemy
-            if (beacon.enemyDefinition != null && enemySpawnPoint != null)
+            if (beacon.EnemyDefinition != null && enemySpawnPoint != null)
             {
                 // TODO: Spawn actual enemy ship from definition
-                Debug.Log($"[Gameplay] Starting combat with: {beacon.enemyDefinition.enemyName}");
+                Debug.Log($"[Gameplay] Starting combat with: {beacon.EnemyDefinition.enemyName}");
             }
 
             if (combatManager != null && playerShip != null)

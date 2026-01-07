@@ -19,9 +19,19 @@ namespace VoidBreaker.Data
         public int maxHull = 30;
         public int startingHull = 30;
 
+        [Header("Shields")]
+        public int maxShieldLayers = 2;
+
+        [Header("Evasion")]
+        public int baseEvasion = 10;
+
         [Header("Systems")]
         public int reactorPower = 8;
         public SystemLoadout[] systemLayouts;
+        public SystemLoadout[] startingSystems; // Alias for systemLayouts
+
+        [Header("Drones")]
+        public int droneSlots = 2;
 
         [Header("Weapons")]
         public int weaponSlots = 4;
@@ -41,6 +51,36 @@ namespace VoidBreaker.Data
         [Header("Unlocking")]
         public bool unlockedByDefault = false;
         public string unlockCondition;
+
+        [Header("Layout")]
+        public ShipRoomLayout roomLayout;
+
+        // Property aliases for compatibility
+        public Sprite shipIcon => shipSprite;
+        public bool isUnlockedByDefault => unlockedByDefault;
+        public int baseHull => maxHull;
+        public int baseReactor => reactorPower;
+    }
+
+    [Serializable]
+    public class ShipRoomLayout
+    {
+        public ShipRoomDef[] rooms;
+        public int gridWidth = 10;
+        public int gridHeight = 6;
+    }
+
+    [Serializable]
+    public class ShipRoomDef
+    {
+        public string roomId;
+        public string roomName;
+        public int x;
+        public int y;
+        public int width;
+        public int height;
+        public ShipSystemType assignedSystem;
+        public bool isExterior;
     }
 
     [Serializable]
@@ -78,6 +118,8 @@ namespace VoidBreaker.Data
         Destroyer,
         Battleship,
         Carrier,
-        Scout
+        Scout,
+        Fighter,
+        Freighter
     }
 }

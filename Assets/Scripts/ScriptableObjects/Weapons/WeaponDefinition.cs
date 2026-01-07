@@ -54,6 +54,33 @@ namespace VoidBreaker.Data
         [Header("Unlocking")]
         public bool unlockedByDefault = true;
         public string unlockCondition;
+
+        [Header("Applied Effects")]
+        public WeaponEffect[] appliedEffects = new WeaponEffect[0];
+
+        // Property aliases for compatibility
+        public int powerRequired => powerCost;
+        public int damage => baseDamage;
+        public bool usesAmmo => ammoType != AmmoType.None;
+        public Sprite icon => weaponSprite;
+    }
+
+    [Serializable]
+    public class WeaponEffect
+    {
+        public WeaponEffectType effectType;
+        public float value;
+        public float duration;
+    }
+
+    public enum WeaponEffectType
+    {
+        None,
+        Fire,
+        Breach,
+        Ion,
+        Stun,
+        SystemDamage
     }
 
     public enum AmmoType

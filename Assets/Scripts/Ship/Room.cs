@@ -50,6 +50,10 @@ namespace VoidBreaker.Ship
         public IReadOnlyList<ICrewMember> Crew => crewInRoom;
         public int CrewCount => crewInRoom.Count;
 
+        // Compatibility method aliases
+        public IReadOnlyList<ICrewMember> GetCrewInRoom() => crewInRoom;
+        public void SetOxygenLevel(int level) => SetOxygen(level);
+
         // Events
         public event Action<Room> OnOxygenChanged;
         public event Action<Room> OnFireChanged;
